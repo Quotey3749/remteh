@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+remteh.db
+*.db-journal
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.spec
+reports/*.pdf
