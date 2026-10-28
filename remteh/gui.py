@@ -9,6 +9,7 @@ from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
 
 from .db import Database
+from .export import export_requests_csv
 from .models import (
     Client,
     Equipment,
@@ -933,6 +934,8 @@ class ReportsTab(ttk.Frame):
         tk.Label(right, text="Отчёт по периоду строится по завершённым и закрытым заявкам.",
                  bg=CARD, fg=MUTED, font=(FONT, 8), wraplength=330, justify="left").pack(
             anchor="w", padx=14)
+        ttk.Button(right, text="Экспорт журнала в CSV", style="Accent.TButton",
+                   command=self._export).pack(anchor="w", padx=14, pady=(14, 16))
         self.refresh()
 
     def refresh(self) -> None:
@@ -979,6 +982,17 @@ class ReportsTab(ttk.Frame):
             self.revenue_label.configure(text=str(exc), fg=RED)
             return
         self.revenue_label.configure(text=f"{value:,.2f} руб.".replace(",", " "), fg=GREEN)
+
+    def _export(self) -> None:
+        path = filedialog.asksaveasfilename(
+            parent=self, title="Экспорт журнала заявок", defaultextension=".csv",
+            filetypes=[("CSV", "*.csv")], initialfile="заявки.csv",
+        )
+        if not path:
+            return
+        views = self.app.service.search()
+        export_requests_csv(views, path)
+        messagebox.showinfo("Экспорт", f"Сохранено {len(views)} заявок:\n{path}", parent=self)
 
 
 class RemTechApp(tk.Tk):
