@@ -62,4 +62,4 @@ run.py             точка входа
 
 ## Репозиторий
 
-https://github.com/quotey/remteh
+https://github.com/Quotey3749/remteh
